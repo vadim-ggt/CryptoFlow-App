@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="4" author="vadim">
+        <comment>Create messages table</comment>
+        <createTable tableName="messages">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chat_id"
+                                 constraintName="fk_messages_chat"
+                                 referencedTableName="chats" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="sender_id"
+                                 constraintName="fk_messages_sender"
+                                 referencedTableName="users" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+        <rollback>
+            <dropTable tableName="messages"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
