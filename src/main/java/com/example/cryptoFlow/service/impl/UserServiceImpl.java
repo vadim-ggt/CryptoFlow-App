@@ -3,7 +3,7 @@ package com.example.cryptoFlow.service.impl;
 import com.example.cryptoFlow.dao.UserRepository;
 import com.example.cryptoFlow.dto.user.ResponseUserDto;
 import com.example.cryptoFlow.dto.user.UpdateUserDto;
-import com.example.cryptoFlow.dto.user.UserRegisterDto;
+import com.example.cryptoFlow.dto.user.auth.UserRegisterDto;
 import com.example.cryptoFlow.entity.User;
 import com.example.cryptoFlow.entity.app_enum.Role;
 import com.example.cryptoFlow.exception.AlreadyExistsException;
@@ -22,28 +22,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-
-    @Override
-    @Transactional
-    public ResponseUserDto registerUser(UserRegisterDto user) {
-        if (userRepository.existsByEmail(user.email())){
-            throw new AlreadyExistsException("Email already exists");
-        }
-        if(userRepository.existsByNickname(user.nickname())){
-            throw new AlreadyExistsException("Nickname already exists");
-        }
-
-        User newUser = User.builder()
-                .email(user.email())
-                .nickname(user.nickname())
-                .role(Role.ROLE_USER)
-                .passwordHash(passwordEncoder.encode(user.password()))
-                .build();
-
-        User savedUser = userRepository.save(newUser);
-
-        return userMapper.toDto(savedUser);
-    }
 
     @Override
     public ResponseUserDto getUserByEmail(String email) {
@@ -82,7 +60,6 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.toDto(userRepository.save(user));
     }
-
 
     @Override
     @Transactional

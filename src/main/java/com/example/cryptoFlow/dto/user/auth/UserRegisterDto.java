@@ -1,4 +1,4 @@
-package com.example.cryptoFlow.dto.user;
+package com.example.cryptoFlow.dto.user.auth;
 
 public record UserRegisterDto(
         String email,

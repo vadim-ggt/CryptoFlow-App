@@ -2,7 +2,7 @@ package com.example.cryptoFlow.controller;
 
 import com.example.cryptoFlow.dto.user.ResponseUserDto;
 import com.example.cryptoFlow.dto.user.UpdateUserDto;
-import com.example.cryptoFlow.dto.user.UserRegisterDto;
+import com.example.cryptoFlow.dto.user.auth.UserRegisterDto;
 import com.example.cryptoFlow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public ResponseEntity<ResponseUserDto> registerUser(@RequestBody UserRegisterDto userRegisterDto) {
         ResponseUserDto responseUserDto = userService.registerUser(userRegisterDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUserDto);
-    }
+    }*/
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseUserDto> getUserById(@PathVariable Long id) {
