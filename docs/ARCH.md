@@ -146,13 +146,13 @@ flowchart TD
         D --> E[Реестр контейнеров]
     end
 
-    subgraph "Production (Kubernetes)"
+    subgraph "Production Kubernetes"
         F[Ingress]
         G[Frontend Service]
         H[Backend API Service]
         I[WebSocket Service]
         
-        subgraph "Поды"
+        subgraph "Поды приложений"
             J[Frontend Pods]
             K[Backend Pods]
             L[WebSocket Pods]
@@ -163,7 +163,9 @@ flowchart TD
     end
 
     E --> F
-    F --> G & H & I
+    F --> G
+    F --> H
+    F --> I
     G --> J
     H --> K
     I --> L
