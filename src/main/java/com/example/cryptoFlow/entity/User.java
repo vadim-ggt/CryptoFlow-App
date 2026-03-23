@@ -40,6 +40,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role = Role.ROLE_USER;
 
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

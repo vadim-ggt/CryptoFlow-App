@@ -7,6 +7,7 @@ import com.example.cryptoFlow.entity.User;
 import com.example.cryptoFlow.service.ChatService;
 import com.example.cryptoFlow.service.MessageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +35,13 @@ public class ChatController {
     }
 
     @GetMapping("/{chatId}/messages")
-    public ResponseEntity<List<MessageDto>> getChatMessages(
+    public ResponseEntity<Page<MessageDto>> getChatMessages(
             @PathVariable Long chatId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size,
             @AuthenticationPrincipal User currentUser) {
-        return ResponseEntity.ok(messageService.getChatMessages(chatId, currentUser.getId()));
+
+        return ResponseEntity.ok(messageService.getChatMessages(chatId, currentUser.getId(), page, size));
     }
 
     @PostMapping("/messages")

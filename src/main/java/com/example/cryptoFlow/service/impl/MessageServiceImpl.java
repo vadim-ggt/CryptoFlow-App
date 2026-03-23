@@ -11,6 +11,9 @@ import com.example.cryptoFlow.entity.Message;
 import com.example.cryptoFlow.entity.User;
 import com.example.cryptoFlow.exception.NotFoundException;
 import com.example.cryptoFlow.mapper.message.MessageMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import com.example.cryptoFlow.service.ChatService;
 import com.example.cryptoFlow.service.MessageService;
@@ -57,12 +60,15 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<MessageDto> getChatMessages(Long chatId, Long currentUserId) {
+    public Page<MessageDto> getChatMessages(Long chatId, Long currentUserId, int page, int size) {
         if (!chatMemberRepository.existsByChatIdAndUserId(chatId, currentUserId)) {
             throw new AuthorizationDeniedException("You are not a member of this chat");
         }
 
-        List<Message> messages = messageRepository.findAllByChatIdOrderByCreatedAtAsc(chatId);
+        Pageable pageable = PageRequest.of(page, size);
 
-        return messageMapper.toDtoList(messages);    }
+        Page<Message> messagesPage = messageRepository.findAllByChatIdOrderByCreatedAtDesc(chatId, pageable);
+
+        return messagesPage.map(messageMapper::toDto);
+    }
 }
